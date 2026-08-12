@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 검색 결과로 생성되는 산출물 (앱이 매번 실시간으로 다시 만들어냄 -> 저장소에는 불필요)
+*.xlsx
+*.geojson
+
+.streamlit/secrets.toml
