@@ -58,6 +58,35 @@ SEARCHABLE_FIELDS: dict[str, str] = {
 }
 
 
+# 자주 검색되는 광물의 한글명 -> 인도네시아어 표기 예시 (komoditas 필드 검색용 힌트).
+# 2026-08-19에 komoditas distinct 값(163개, 대소문자 혼재) 전수 확인 후,
+# 실제 존재하는 값에 대응하는 항목만 선별함. 검색은 LIKE(부분일치)+대소문자 무시라
+# 아래 표기 그대로 입력하면 대소문자와 무관하게 매칭된다.
+MINERAL_SEARCH_EXAMPLES: list[tuple[str, str]] = [
+    ("니켈", "nikel"),
+    ("보크사이트", "bauksit"),
+    ("석탄", "batubara"),
+    ("금", "emas"),
+    ("철(철광석)", "besi"),
+    ("구리", "tembaga"),
+    ("주석", "timah"),
+    ("납", "timbal"),
+    ("망간", "mangan"),
+    ("크로마이트(크롬)", "kromit"),
+    ("규사(석영사)", "pasir kuarsa"),
+    ("석회석", "gamping"),
+    ("화강암", "granit"),
+    ("안산암", "andesit"),
+    ("점토", "tanah liat"),
+    ("대리석", "marmer"),
+    ("인회석(인산염)", "fosfat"),
+    ("제올라이트", "zeolit"),
+    ("흑연", "grafit"),
+    ("지르콘", "zirkon"),
+    ("희토류", "logam tanah jarang"),
+]
+
+
 class WiupApiError(RuntimeError):
     pass
 

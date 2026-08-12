@@ -47,6 +47,13 @@ with st.form("search_form"):
     exact = st.checkbox("정확히 일치하는 것만 검색", value=False)
     submitted = st.form_submit_button("🔍 검색", use_container_width=True)
 
+with st.expander("💡 광물 종류로 검색할 때 예시 (검색 대상: 광물 종류)"):
+    st.caption("원본 데이터가 인도네시아어로 입력되어 있어, 검색어도 아래처럼 인도네시아어 표기로 입력해야 합니다 (대소문자는 구분하지 않음).")
+    example_cols = st.columns(3)
+    for i, (kr, term_ex) in enumerate(wl.MINERAL_SEARCH_EXAMPLES):
+        with example_cols[i % 3]:
+            st.markdown(f"- **{kr}**: `{term_ex}`")
+
 if submitted:
     term_clean = term.strip()
     if not term_clean:
