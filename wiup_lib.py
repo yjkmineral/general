@@ -55,6 +55,8 @@ SEARCHABLE_FIELDS: dict[str, str] = {
     "nama_prov": "주",
     "sk_iup": "SK 번호",
     "komoditas": "광물 종류",
+    "jenis_izin": "허가 종류",
+    "kegiatan": "생산단계",
 }
 
 
@@ -84,6 +86,29 @@ MINERAL_SEARCH_EXAMPLES: list[tuple[str, str]] = [
     ("흑연", "grafit"),
     ("지르콘", "zirkon"),
     ("희토류", "logam tanah jarang"),
+]
+
+# jenis_izin(허가 종류) 필드의 실제 distinct 값 전부 (2026-08-19 기준 7개, 전수 확인됨).
+# 이 필드는 원래 짧은 약어라 그대로 검색어로 입력하면 됨 (예: "IUP").
+PERMIT_TYPE_EXAMPLES: list[tuple[str, str]] = [
+    ("WIUP (광업사업허가지역)", "WIUP"),
+    ("IUP (광업사업허가)", "IUP"),
+    ("IUPK (특별광업사업허가)", "IUPK"),
+    ("WIUPK (특별광업허가지역)", "WIUPK"),
+    ("PKP2B (석탄사업협약)", "PKP2B"),
+    ("KK (계약광업권)", "KK"),
+    ("IPR (민간·소규모 채굴허가)", "IPR"),
+]
+
+# kegiatan(생산단계) 필드의 실제 distinct 값 전부 (2026-08-19 기준 7개, 전수 확인됨).
+PRODUCTION_STAGE_EXAMPLES: list[tuple[str, str]] = [
+    ("예비지정", "PENCADANGAN"),
+    ("탐사", "EKSPLORASI"),
+    ("생산운영", "OPERASI PRODUKSI"),
+    ("경매(입찰) 대상", "LELANG"),
+    ("지원구역", "WIL. PENUNJANG"),
+    ("제재(효력정지)", "SANKSI (PEMBEKUAN)"),
+    ("제재(일시중단)", "SANKSI (PENGHENTIAN SEMENTARA)"),
 ]
 
 

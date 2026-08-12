@@ -19,9 +19,21 @@ import streamlit as st
 
 import wiup_lib as wl
 
-st.set_page_config(page_title="ESDM Minerba WIUP 조회", page_icon="⛏️", layout="wide")
+st.set_page_config(page_title="ESDM Minerba 조회", page_icon="⛏️", layout="wide")
 
-st.title("⛏️ 인도네시아 ESDM Minerba WIUP 조회")
+st.markdown(
+    """
+    <style>
+    .st-key-detail_select_box div[data-baseweb="select"] > div {
+        background-color: #d6f0ff !important;
+        border-color: #4fb3e8 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.title("⛏️ 인도네시아 ESDM Minerba 조회")
 st.caption(
     "인도네시아 에너지광물자원부(ESDM) Minerba Geoportal의 공개 데이터를 실시간으로 조회합니다. "
     "회사명을 입력하면 광구(WIUP/IUP 등) 정보와 경계 좌표를 확인하고 파일로 내려받을 수 있습니다."
@@ -47,11 +59,25 @@ with st.form("search_form"):
     exact = st.checkbox("정확히 일치하는 것만 검색", value=False)
     submitted = st.form_submit_button("🔍 검색", use_container_width=True)
 
-with st.expander("💡 광물 종류로 검색할 때 예시 (검색 대상: 광물 종류)"):
-    st.caption("원본 데이터가 인도네시아어로 입력되어 있어, 검색어도 아래처럼 인도네시아어 표기로 입력해야 합니다 (대소문자는 구분하지 않음).")
-    example_cols = st.columns(3)
+with st.expander("💡 검색 대상별 검색어 예시"):
+    st.markdown("**광물 종류** — 원본 데이터가 인도네시아어라 아래처럼 인도네시아어 표기로 입력 (대소문자 무관)")
+    mineral_cols = st.columns(3)
     for i, (kr, term_ex) in enumerate(wl.MINERAL_SEARCH_EXAMPLES):
-        with example_cols[i % 3]:
+        with mineral_cols[i % 3]:
+            st.markdown(f"- **{kr}**: `{term_ex}`")
+
+    st.markdown("---")
+    st.markdown("**허가 종류** — 아래 7가지 값 중 하나를 그대로 입력")
+    permit_cols = st.columns(3)
+    for i, (kr, term_ex) in enumerate(wl.PERMIT_TYPE_EXAMPLES):
+        with permit_cols[i % 3]:
+            st.markdown(f"- {kr}: `{term_ex}`")
+
+    st.markdown("---")
+    st.markdown("**생산단계** — 아래 7가지 값 중 하나를 그대로 입력")
+    stage_cols = st.columns(3)
+    for i, (kr, term_ex) in enumerate(wl.PRODUCTION_STAGE_EXAMPLES):
+        with stage_cols[i % 3]:
             st.markdown(f"- **{kr}**: `{term_ex}`")
 
 if submitted:
@@ -100,7 +126,12 @@ if features is not None:
             option_labels.append(f"{a.get('nama_usaha')}  |  {a.get('kode_wiup')}  |  {a.get('nama_kab')}")
         idx = 0
         if len(features) > 1:
-            selected = st.selectbox("상세 정보를 볼 광구를 선택하세요", options=range(len(features)), format_func=lambda i: option_labels[i])
+            with st.container(key="detail_select_box"):
+                selected = st.selectbox(
+                    "🔎 상세 정보를 볼 광구를 선택하세요",
+                    options=range(len(features)),
+                    format_func=lambda i: option_labels[i],
+                )
             idx = selected
 
         feat = features[idx]
