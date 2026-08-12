@@ -13,6 +13,7 @@ import re
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from datetime import datetime, timezone
 from io import BytesIO
 from typing import Any
@@ -207,6 +208,22 @@ def features_to_geojson_dict(features: list[dict]) -> dict:
 def geojson_bytes(features: list[dict]) -> bytes:
     fc = features_to_geojson_dict(features)
     return json.dumps(fc, ensure_ascii=False, indent=2).encode("utf-8")
+
+
+def geojson_zip_bytes(features: list[dict]) -> bytes:
+    """검색 결과 각 광구를 개별 GeoJSON 파일(`{회사명}_IUP_boundary.geojson`)로 만들어 zip으로 묶는다."""
+    buf = BytesIO()
+    used_names: dict[str, int] = {}
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for f in features:
+            attrs = f.get("attributes", {})
+            base_name = safe_filename(attrs.get("nama_usaha") or attrs.get("kode_wiup"))
+            count = used_names.get(base_name, 0)
+            used_names[base_name] = count + 1
+            suffix = f"_{count + 1}" if count else ""
+            file_name = f"{base_name}{suffix}_IUP_boundary.geojson"
+            zf.writestr(file_name, geojson_bytes([f]))
+    return buf.getvalue()
 
 
 def xlsx_bytes(attributes: dict) -> bytes:

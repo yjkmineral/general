@@ -202,10 +202,10 @@ if features is not None:
             )
         with col_d:
             st.download_button(
-                f"🗺️ 전체 {len(features)}건 GeoJSON 다운로드",
-                data=wl.geojson_bytes(features),
-                file_name=f"{safe_term}_전체{len(features)}건.geojson",
-                mime="application/geo+json",
+                f"🗺️ 전체 {len(features)}건 GeoJSON 다운로드 (광구별 zip)",
+                data=wl.geojson_zip_bytes(features),
+                file_name=f"전체 {len(features)}건.zip",
+                mime="application/zip",
                 use_container_width=True,
             )
 
