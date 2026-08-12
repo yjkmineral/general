@@ -34,9 +34,15 @@ st.markdown(
 )
 
 st.title("⛏️ 인도네시아 ESDM Minerba 조회")
-st.caption(
-    "인도네시아 에너지광물자원부(ESDM) Minerba Geoportal의 공개 데이터를 실시간으로 조회합니다. "
-    "회사명을 입력하면 광구(WIUP/IUP 등) 정보와 경계 좌표를 확인하고 파일로 내려받을 수 있습니다."
+st.markdown(
+    """
+    <p style="font-size: 15px; color: #31333F; margin-top: -8px;">
+    인도네시아 에너지광물자원부(ESDM) Minerba Geoportal의 공개 데이터를 실시간으로 조회합니다.
+    회사명을 입력하면 광구(WIUP/IUP 등) 정보와 경계 좌표를 확인하고 파일로 내려받아 QGIS
+    프로그램에서 벡터 파일로 활용할 수 있습니다.
+    </p>
+    """,
+    unsafe_allow_html=True,
 )
 
 with st.form("search_form"):
