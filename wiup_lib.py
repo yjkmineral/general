@@ -25,6 +25,16 @@ BASE_URL = (
 
 MAX_RECORD_COUNT = 100  # 서버 설정값 (MapServer capabilities에 명시됨)
 
+# 서버가 Referer 헤더 없는 요청을 403(GWM_0003)으로 차단하기 시작함(2026-09 확인).
+# geoportal 사이트에서 호출하는 것처럼 Referer를 지정해야 정상 응답이 온다.
+REQUEST_HEADERS = {
+    "Referer": "https://geoportal.esdm.go.id/minerba/",
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+    ),
+}
+
 # (필드명, 한글 라벨) - 엑셀/화면 표시 순서
 FIELD_ORDER: list[tuple[str, str]] = [
     ("nama_usaha", "회사명(Nama Usaha)"),
@@ -146,8 +156,9 @@ def fetch_all(where: str, out_fields: str = "*", geometry: bool = True) -> list[
             "resultRecordCount": MAX_RECORD_COUNT,
         }
         url = BASE_URL + "?" + urllib.parse.urlencode(params)
+        req = urllib.request.Request(url, headers=REQUEST_HEADERS)
         try:
-            with urllib.request.urlopen(url, timeout=30) as resp:
+            with urllib.request.urlopen(req, timeout=30) as resp:
                 data = json.load(resp)
         except urllib.error.URLError as e:
             raise WiupApiError(f"서버 요청 실패: {e}") from e
